@@ -1,5 +1,5 @@
 {
-  "name": "rrp-bot",
+  "name": "relived-bot",
   "version": "1.0.0",
   "description": "Relived Roleplay Discord Bot",
   "main": "./build/index.js",
