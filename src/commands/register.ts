@@ -4,7 +4,7 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { Command } from "../interfaces/Command";
 import validateEmail from "../utils/validateEmail";
 import { errorHandler } from "../utils/errorHandler";
-import { discordChannel, userRoles, hasRole } from "../utils/any";
+import { discordChannel, userRoles, hasRole, convertTimestamp } from "../utils/any";
 import getUcpFromDiscordID from "../database/helper/GetUcp";
 import { GuildMember } from "discord.js";
 
@@ -27,6 +27,18 @@ const register: Command = {
       await interaction.deferReply();
       const { user } = interaction;
       const { channelId } = interaction;
+
+      // if users created date is less than 30 days, return error
+      const userCreatedDate: number = Math.floor(user.createdTimestamp / 1000),
+      now: number = Math.floor(Date.now() / 1000);
+
+      if ((now - userCreatedDate) < (86400 * 30)) {
+        await interaction.editReply({
+          content: `ERROR: Anda tidak dapat mendaftar karena akun discord anda belum beerumur 30 hari dan Akun Discord anda dibuat pada **${convertTimestamp(userCreatedDate).toString()}**`
+        });
+
+        return;
+      }
 
       if (hasRole(interaction.member as GuildMember, userRoles.verifyUCP)) {
         interaction.editReply({
@@ -78,6 +90,11 @@ const register: Command = {
           await interaction.editReply({
             content: `:white_check_mark: Berhasil mendaftarkan akun UCP **${username}**, silahkan cek email yang anda masukkan untuk verifikasi akun Anda`
           });
+
+          let role = await interaction.guild?.roles.cache.find(r => r.id === userRoles.verifyUCP);
+          if (role) {
+            await (interaction.member as GuildMember).roles.add(role);
+          }
         }).catch(async (error) => {
           await interaction.editReply({
             content: `:x: Gagal mendaftarkan akun UCP, **${error}**`
