@@ -5,6 +5,7 @@ import { Command } from "../interfaces/Command";
 import validateEmail from "../utils/validateEmail";
 import { errorHandler } from "../utils/errorHandler";
 import { discordChannel } from "../utils/any";
+import getUcpFromDiscordID from "../database/helper/GetUcp";
 
 const register: Command = {
   data: new SlashCommandBuilder()
@@ -17,7 +18,7 @@ const register: Command = {
     )
     .addStringOption(option => option
       .setName("email")
-      .setDescription("Email yang ingin didaftarkan")
+      .setDescription("Email yang ingin didaftarkan, pastikan email aktif")
       .setRequired(true)
     ),
   run: async (interaction) => {
@@ -28,7 +29,7 @@ const register: Command = {
 
       if (channelId !== discordChannel.register) {
         await interaction.editReply({
-          content: `ERROR: Tidak dapat menggunakan perintah itu di channel ini. Silahkan coba di channel <#${discordChannel.register}>`
+          content: `:x: Tidak dapat menggunakan perintah itu di channel ini. Silahkan coba di channel <#${discordChannel.register}>`
         });
         return;
       }
@@ -45,35 +46,34 @@ const register: Command = {
   
       if (!validateEmail(email)) {
         await interaction.editReply({
-          content: "ERROR: Email yang anda masukkan tidak valid"
+          content: ":x: Email yang anda masukkan tidak valid"
         })
         return;
       } else if (await CheckAccount(username)) {
         await interaction.editReply({
-          content: "ERROR: Nama UCP sudah terdaftar di server, silahkan gunakan nama lain"
+          content: ":x: Nama UCP sudah terdaftar di server, silahkan gunakan nama lain"
         })
         return;
       } else if (await CheckAccount("", email, "")) {
         await interaction.editReply({
-          content: "ERROR: Email sudah terdaftar di server, silahkan gunakan email lain"
+          content: ":x: Email sudah terdaftar di server, silahkan gunakan email lain"
         })
         return;
       } else if (await CheckAccount("", "", user.id)) {
         await interaction.editReply({
-          content: `Sepertinya Anda sudah pernah mendaftar sebelumnya, UCP ${CheckAccount(user.id)} sudah terkaitkan dengan akun Discord Anda`
+          content: `:x: Sepertinya Anda sudah pernah mendaftar sebelumnya, UCP **${(await getUcpFromDiscordID(user.id)).toString()}** sudah terkaitkan dengan akun Discord Anda`
         });
         return;
       } else {
-        const success = await Register(username, email, user.id);
-        if (success) {
+        await Register(username, email, user.id).then(async () => {
           await interaction.editReply({
-            content: `SUCCESS: Berhasil mendaftarkan akun UCP ${username}, silahkan cek email yang anda masukkan untuk verifikasi akun Anda`
+            content: `:white_check_mark: Berhasil mendaftarkan akun UCP **${username}**, silahkan cek email yang anda masukkan untuk verifikasi akun Anda`
           });
-        } else {
+        }).catch(async (error) => {
           await interaction.editReply({
-            content: "ERROR: Gagal mendaftarkan akun UCP"
+            content: `:x: Gagal mendaftarkan akun UCP, **${error}**`
           });
-        }
+        });
       }
     } catch (error) {
       errorHandler("register command", error);

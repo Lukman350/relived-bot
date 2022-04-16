@@ -23,14 +23,14 @@ const whitelist: Command = {
 
       if (!isRoleAdmin(interaction.member as GuildMember)) {
         await interaction.editReply({
-          content: "ERROR: Anda tidak memiliki hak akses untuk menggunakan perintah ini"
+          content: ":x: Anda tidak memiliki hak akses untuk menggunakan perintah ini"
         });
         return;
       }
 
       if (channelId !== discordChannel.whitelist) {
         await interaction.editReply({
-          content: `ERROR: Tidak dapat menggunakan perintah itu di channel ini. Silahkan coba di channel <#${discordChannel.whitelist}>`
+          content: `:x: Tidak dapat menggunakan perintah itu di channel ini. Silahkan coba di channel <#${discordChannel.whitelist}>`
         });
         return;
       }
@@ -39,27 +39,26 @@ const whitelist: Command = {
 
       if (!username) {
         await interaction.editReply({
-          content: "ERROR: Username harus diisi!"
+          content: ":x: Username harus diisi!"
         });
         return;
       }
 
-      if (await CheckAccount(username)) {
+      if (await CheckAccount(username) === false) {
         await interaction.editReply({
-          content: "ERROR: Nama UCP tidak ditemukan di server, silahkan coba lagi"
+          content: ":x: Nama UCP tidak ditemukan di server, silahkan coba lagi"
         })
         return;
       }
 
-      if (await Whitelist(username) === false) {
+      await Whitelist(username).then(async () => {
         await interaction.editReply({
-          content: "ERROR: Nama UCP sudah terdaftar dalam WhiteList, silahkan coba lagi"
-        })
-        return;
-      }
-
-      await interaction.editReply({
-        content: `SUCCESS: Berhasil menambahkan ${username} ke WhiteList`
+          content: `:white_check_mark: Berhasil menambahkan **${username}** ke WhiteList`
+        });
+      }).catch(async () => {
+        await interaction.editReply({
+          content: ":x: Nama UCP sudah terdaftar dalam WhiteList, silahkan coba lagi"
+        });
       });
     } catch (error) {
       errorHandler("whitelist command", error);
