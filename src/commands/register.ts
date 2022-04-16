@@ -4,8 +4,9 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { Command } from "../interfaces/Command";
 import validateEmail from "../utils/validateEmail";
 import { errorHandler } from "../utils/errorHandler";
-import { discordChannel } from "../utils/any";
+import { discordChannel, userRoles, hasRole } from "../utils/any";
 import getUcpFromDiscordID from "../database/helper/GetUcp";
+import { GuildMember } from "discord.js";
 
 const register: Command = {
   data: new SlashCommandBuilder()
@@ -26,6 +27,14 @@ const register: Command = {
       await interaction.deferReply();
       const { user } = interaction;
       const { channelId } = interaction;
+
+      if (hasRole(interaction.member as GuildMember, userRoles.verifyUCP)) {
+        interaction.editReply({
+          content: ":x: Anda sudah terdaftar di server kami"
+        });
+
+        return;
+      }
 
       if (channelId !== discordChannel.register) {
         await interaction.editReply({

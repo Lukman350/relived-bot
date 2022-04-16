@@ -25,7 +25,7 @@
 - [x] Register command
 - [x] Help command
 - [x] Whitelist command
-- [ ] Setstory command
+- [x] Setstory command
 - [ ] Updatediscorducp command
 - [ ] Getuserinfo command
 - [ ] Botinfo command
