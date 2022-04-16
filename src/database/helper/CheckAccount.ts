@@ -1,10 +1,10 @@
 import { connection } from "..";
 
 const CheckAccount = async (username: string = "", email: string = "", discordID: string = "") => {
-  let isExists;
+  let isExists: boolean;
   if (username !== "") {
     const [rows]: Array<any> = await connection.promise().execute(
-      `SELECT ID FROM accounts WHERE Username = ?`,
+      `SELECT ID FROM accounts WHERE Username = ? LIMIT 1`,
       [username]
     );
     
@@ -12,7 +12,7 @@ const CheckAccount = async (username: string = "", email: string = "", discordID
     return isExists;
   } else if (email !== "") {
     const [rows]: Array<any> = await connection.promise().execute(
-      `SELECT ID FROM accounts WHERE Email = ?`,
+      `SELECT ID FROM accounts WHERE Email = ? LIMIT 1`,
       [email]
     );
     
@@ -20,14 +20,12 @@ const CheckAccount = async (username: string = "", email: string = "", discordID
     return isExists;
   } else if (discordID !== "") {
     const [rows]: Array<any> = await connection.promise().execute(
-      `SELECT Username FROM accounts WHERE DiscordID = ?`,
+      `SELECT Username FROM accounts WHERE DiscordID = ? LIMIT 1`,
       [discordID]
     );
     
     isExists = rows.length > 0;
-
-    if (isExists) return rows[0].Username;
-    else return isExists;
+    return isExists;
   }
 }
 
