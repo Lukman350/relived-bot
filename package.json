@@ -1,0 +1,34 @@
+{
+  "name": "rrp-bot",
+  "version": "1.0.0",
+  "description": "Relived Roleplay Discord Bot",
+  "main": "./build/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node -r dotenv/config ./build/index.js"
+  },
+  "author": "Lukman",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/builders": "^0.12.0",
+    "@discordjs/rest": "^0.3.0",
+    "@sentry/integrations": "^6.19.6",
+    "@sentry/node": "6.19.6",
+    "axios": "^0.26.1",
+    "discord-api-types": "^0.31.1",
+    "discord.js": "^13.6.0",
+    "dotenv": "^16.0.0",
+    "mysql2": "^2.3.3",
+    "nodemailer": "^6.7.3",
+    "nodemailer-smtp-transport": "^2.7.4",
+    "samp-query": "^0.1.5",
+    "winston": "^3.7.2"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.24",
+    "@types/nodemailer": "^6.4.4",
+    "@types/nodemailer-smtp-transport": "^2.7.5",
+    "eslint": "^8.13.0",
+    "typescript": "^4.6.3"
+  }
+}
