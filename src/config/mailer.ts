@@ -11,7 +11,7 @@ const transporter = nodemailer.createTransport(smtpTransport({
 }));
 
 const sendMail = async (email: string, code: string, username: string) => {
-  return new Promise(async (resolve, reject) => {
+  return await new Promise(async (resolve, reject) => {
     const html = `
       <table>
         <thead style='background-color: red; color: white'>
