@@ -3,7 +3,8 @@ import CheckAccount from "../database/helper/CheckAccount";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { Command } from "../interfaces/Command";
 import { errorHandler } from "../utils/errorHandler";
-import { discordChannel } from "../utils/any";
+import { discordChannel, isRoleAdmin } from "../utils/any";
+import { GuildMember } from "discord.js";
 
 const setstory: Command = {
   data: new SlashCommandBuilder()
@@ -17,7 +18,14 @@ const setstory: Command = {
   run: async (interaction) => {
     try {
       await interaction.deferReply();
-      const { channelId } = interaction;
+      const { channelId, member } = interaction;
+
+      if (!isRoleAdmin(member as GuildMember)) {
+        await interaction.editReply({
+          content: ":x: Anda tidak memiliki hak akses untuk menggunakan perintah ini"
+        });
+        return;
+      }
 
       if (channelId !== discordChannel.setStory) {
         await interaction.editReply({
