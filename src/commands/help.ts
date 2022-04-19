@@ -12,7 +12,7 @@ const help: Command = {
       await interaction.deferReply();
 
       const helpEmbed = new MessageEmbed()
-        .setColor("#0099ff")
+        .setColor("#e8c02a")
         .setTitle("Daftar Perintah")
         .setDescription(
           `Perintah yang tersedia saat ini adalah:
@@ -28,7 +28,12 @@ const help: Command = {
           \`/cat\` - Untuk menampilkan gambar kucing secara random
           \`/dog\` - Untuk menampilkan gambar anjing secara random
           `
-        );
+        )
+        .setThumbnail("https://cdn.discordapp.com/icons/914691384345239592/a_63d5fde381cb34664516332e190c8b84.webp?size=96")
+        .setFooter({
+          text: "Copyright © 2022 Relived Roleplay",
+          iconURL: "https://cdn.discordapp.com/icons/914691384345239592/a_63d5fde381cb34664516332e190c8b84.webp?size=96",
+        });
 
       await interaction.editReply({
         embeds: [helpEmbed],

@@ -3,7 +3,7 @@ import { connection } from "..";
 const Whitelist = async (username: string) => {
   return await new Promise(async (resolve, reject) => {
     const [alreadyWhitelisted]: Array<any> = await connection.promise().execute(  
-      `SELECT WhiteList FROM accounts WHERE Username = ? LIMIT 1`,
+      "SELECT `WhiteList` FROM `accounts` WHERE `Username` = ? LIMIT 1",
       [username]
     );
 
@@ -14,7 +14,7 @@ const Whitelist = async (username: string) => {
         reject(false);
       } else {
         const [rows]: Array<any> = await connection.promise().execute(
-          `UPDATE accounts SET WhiteList = '1' WHERE Username = ?`,
+          "UPDATE `accounts` SET `WhiteList` = '1' WHERE `Username` = ?",
           [username]
         );
     

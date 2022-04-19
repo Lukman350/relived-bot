@@ -16,7 +16,7 @@ const Register = async (username: string, email: string, userDiscord: string) =>
   
     await sendMail(email, verifyCode, username).then(async () => {
       const [rows]: Array<any> = await connection.promise().execute(
-        `INSERT INTO accounts (Username, Password, Salt, RegisterDate, VerifyCode, WhiteList, Email, DiscordID) VALUES (?, 'None', 'None', ?, ?, '1', ?, ?)`,
+        "INSERT INTO `accounts` (`Username`, `Password`, `Salt`, `RegisterDate`, `VerifyCode`, `WhiteList`, `Email`, `DiscordID`) VALUES (?, 'None', 'None', ?, ?, '1', ?, ?)",
         [username, registerDate, verifyCode, email, userDiscord]
       );
     

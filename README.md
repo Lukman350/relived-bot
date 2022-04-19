@@ -26,13 +26,13 @@
 - [x] Help command
 - [x] Whitelist command
 - [x] Setstory command
-- [ ] Updatediscorducp command
-- [ ] Getuserinfo command
-- [ ] Botinfo command
-- [ ] Quote command
-- [ ] Urban command
-- [ ] Cat command
-- [ ] Dog command
+- [x] Updatediscorducp command
+- [x] Getuserinfo command
+- [x] Botinfo command
+- [x] Quote command
+- [x] Urban command
+- [x] Cat command
+- [x] Dog command
 
 # Note
 - This is still under development

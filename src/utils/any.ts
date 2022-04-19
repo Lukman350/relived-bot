@@ -1,16 +1,21 @@
 import { GuildMember } from "discord.js"
 
 export const discordChannel = {
-  setStory: "914770321079431208",
+  // setStory: "914770321079431208",
+  setStory: "790858993010606113",
   // whitelist: "826005084269182986",
   whitelist: "790858993010606113",
   // register: "914712459326152746",
   register: "826100427153604658",
-  updateUCP: "914904500827983872"
+  // updateUCP: "914904500827983872"
+  updateUCP: "790858993010606113",
+  // getUserInfo: "929591874128338984"
+  getUserInfo: "826100427153604658"
 }
 
 export const userRoles = {
-  verifyUCP: "914691384345239600",
+  // verifyUCP: "914691384345239600",
+  verifyUCP: "965537696841859082",
   acceptedStory: "914691384345239601",
   girl: "914691384362008576",
   influencer: "914691384362008577",

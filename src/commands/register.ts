@@ -25,8 +25,7 @@ const register: Command = {
   run: async (interaction) => {
     try {
       await interaction.deferReply();
-      const { user } = interaction;
-      const { channelId } = interaction;
+      const { user, channelId, member } = interaction;
 
       // if users created date is less than 30 days, return error
       const userCreatedDate: number = Math.floor(user.createdTimestamp / 1000),
@@ -34,7 +33,7 @@ const register: Command = {
 
       if ((now - userCreatedDate) < (86400 * 30)) {
         await interaction.editReply({
-          content: `ERROR: Anda tidak dapat mendaftar karena akun discord anda belum beerumur 30 hari dan Akun Discord anda dibuat pada **${convertTimestamp(userCreatedDate).toString()}**`
+          content: `:x: Anda tidak dapat mendaftar karena akun discord anda belum beerumur 30 hari dan Akun Discord anda dibuat pada **${convertTimestamp(userCreatedDate).toString()}**`
         });
 
         return;
@@ -60,7 +59,7 @@ const register: Command = {
   
       if (!username || !email) {
         await interaction.editReply({
-          content: "Username dan email harus diisi!"
+          content: ":x: Username dan email harus diisi!"
         });
         return;
       }
@@ -87,14 +86,20 @@ const register: Command = {
         return;
       } else {
         await Register(username, email, user.id).then(async () => {
+          let role = await interaction.guild?.roles.cache.find(r => r.id === userRoles.verifyUCP);
+          if (role) {
+            await (member as GuildMember).roles.add(role);
+          }
+
+          await (member as GuildMember).setNickname(username, "Register UCP").catch(async () => {
+            await interaction.editReply({
+              content: `:x: Gagal mengubah nickname mu, silahkan minta Admin untuk mengubah nickname mu`
+            });
+          });
+
           await interaction.editReply({
             content: `:white_check_mark: Berhasil mendaftarkan akun UCP **${username}**, silahkan cek email yang anda masukkan untuk verifikasi akun Anda`
           });
-
-          let role = await interaction.guild?.roles.cache.find(r => r.id === userRoles.verifyUCP);
-          if (role) {
-            await (interaction.member as GuildMember).roles.add(role);
-          }
         }).catch(async (error) => {
           await interaction.editReply({
             content: `:x: Gagal mendaftarkan akun UCP, **${error}**`

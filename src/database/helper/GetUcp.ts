@@ -4,7 +4,7 @@ const getUcpFromDiscordID = async (discordID: string): Promise<string> => {
   let ucp:string;
 
   const [rows]: Array<any> = await connection.promise().execute(
-    `SELECT Username FROM accounts WHERE DiscordID = ? LIMIT 1`,
+    "SELECT `Username` FROM `accounts` WHERE `DiscordID` = ? LIMIT 1",
     [discordID]
   );
 

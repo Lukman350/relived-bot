@@ -1,10 +1,9 @@
 import { connection } from "..";
-import { errorHandler } from "../../utils/errorHandler";
 
 const SetStory = async (character: string) => {
   return await new Promise(async (resolve, reject) => {
     const [isAlreadySet]: Array<any> = await connection.promise().execute(
-      `SELECT Story FROM characters WHERE Character = ?`,
+      "SELECT `Story` FROM `characters` WHERE `Character` = ?",
       [character]
     );
 
@@ -12,7 +11,7 @@ const SetStory = async (character: string) => {
       reject(false);
     } else {
       const [result]: Array<any> = await connection.promise().execute(
-        `UPDATE characters SET Story = '1' WHERE Character = ?`,
+        "UPDATE `characters` SET Story = '1' WHERE `Character` = ?",
         [character]
       )
 

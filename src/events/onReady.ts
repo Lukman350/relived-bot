@@ -4,6 +4,7 @@ import { REST } from "@discordjs/rest";
 import { APIApplicationCommandOption, Routes } from "discord-api-types/v9";
 import { CommandList } from "../commands/_CommandList";
 import { Client } from "discord.js";
+import getServerStatus from "../database/helper/getServerStatus";
 
 export const onReady = async (BOT: Client): Promise<void> => {
   try {
@@ -35,6 +36,31 @@ export const onReady = async (BOT: Client): Promise<void> => {
       ),
       { body: commandData }
     );
+
+    setInterval(async () => {
+      await getServerStatus().then(async (data: any) => {
+        BOT.user?.setPresence({
+          activities: [
+            {
+              name: `${data.hostname}\nGamemode: ${data.gamemode}\nPlayers: ${data.online} / ${data.maxplayers}\nVersion: ${data.rules.version}\nWebsite: ${data.rules.weburl}`,
+              type: "PLAYING",
+            },
+          ],
+          status: "online",
+        });
+      }).catch(async (err) => {
+        BOT.user?.setPresence({
+          activities: [
+            {
+              name: `Error getting server status: ${err}`,
+              type: "PLAYING",
+            },
+          ],
+          status: "online",
+        });
+      });
+    }, 90000);
+
     logHandler.log("info", "Bot has connected to Discord!");
   } catch (err) {
     errorHandler("onReady event", err);
