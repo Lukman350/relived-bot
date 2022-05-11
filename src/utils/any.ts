@@ -5,7 +5,8 @@ export const discordChannel = {
   whitelist: "929591874128338984",
   register: "914712459326152746",
   updateUCP: "914904500827983872",
-  getUserInfo: "929591874128338984"
+  getUserInfo: "929591874128338984",
+  refundRole: "925299181743116328"
 }
 
 export const userRoles = {
