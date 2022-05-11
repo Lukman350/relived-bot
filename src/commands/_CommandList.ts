@@ -10,6 +10,7 @@ import quote from "./quote";
 import urban from "./urban";
 import dog from "./dog";
 import cat from "./cat";
+import refundrole from "./refundrole";
 
 export const CommandList: Command[] = [
   register,
@@ -22,5 +23,6 @@ export const CommandList: Command[] = [
   quote,
   urban,
   dog,
-  cat
+  cat,
+  refundrole
 ];
